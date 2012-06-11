@@ -287,10 +287,10 @@ float RealisticCamera::GenerateRay(const CameraSample &sample, Ray *ray) const
     Point discPos(lensU*discRadius,lensV*discRadius, DiscZ);
 
     *ray = Ray(filmplanePos, Normalize(discPos-filmplanePos),0.f, INFINITY);
-
+	bool render = false;
 #ifdef VDB
     char * env = getenv ("VDB_RAYS_LIMIT");
-    bool render = rand() % atoi(env) >= atoi(env)-1;
+    render = rand() % atoi(env) >= atoi(env)-1;
 #endif
 
     //Traverse ray

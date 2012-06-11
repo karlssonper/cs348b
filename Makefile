@@ -58,13 +58,12 @@ endif
 CC=gcc
 CXX=g++
 LD=$(CXX) $(OPT) $(MARCH)
-INCLUDE=-I. -Icore $(EXR_INCLUDES) $(TIFF_INCLUDES) -I/home/per/dev/vdb.git -I /home/per/Downloads/naiad-0.6.0.70-x86_64/server/include/Nb -I /home/per/Downloads/naiad-0.6.0.70-x86_64/server/include/Ng -I /home/per/Downloads/naiad-0.6.0.70-x86_64/server/include/Ni -I /home/per/Downloads/naiad-0.6.0.70-x86_64/server/include/em -DNO_FREETYPE -I /home/per/Downloads/pngwriter-0.5.4/src
+INCLUDE=-I. -Icore $(EXR_INCLUDES) $(TIFF_INCLUDES) -I $(NAIAD_PATH)/server/include/Nb -I $(NAIAD_PATH)/server/include/Ng -I $(NAIAD_PATH)/server/include/Ni -I $(NAIAD_PATH)/server/include/em 
 WARN=-Wall
 CWD=$(shell pwd)
 CXXFLAGS=$(OPT) $(MARCH) $(INCLUDE) $(WARN) $(DEFS)
 CCFLAGS=$(CXXFLAGS)
-LIBS=$(LEXLIB) $(EXR_LIBDIR) $(EXRLIBS) -lm -L /home/per/Downloads/naiad-0.6.0.70-x86_64/server/lib -lNb -lNi -L /home/per/Downloads/pngwriter-0.5.4/src -l pngwriter -lpng
-
+LIBS=$(LEXLIB) $(EXR_LIBDIR) $(EXRLIBS) -lm -L $(NAIAD_PATH)/server/lib -lNb -lNi 
 LIBSRCS=$(wildcard core/*.cpp) core/pbrtlex.cpp core/pbrtparse.cpp
 LIBSRCS += $(wildcard accelerators/*.cpp cameras/*.cpp film/*.cpp filters/*.cpp )
 LIBSRCS += $(wildcard integrators/*.cpp lights/*.cpp materials/*.cpp renderers/*.cpp )

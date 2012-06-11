@@ -1,0 +1,4 @@
+ld: library not found for -lNb
+collect2: ld returned 1 exit status
+make: *** [bin/exrtotiff] Error 1
+make: *** Waiting for unfinished jobs....

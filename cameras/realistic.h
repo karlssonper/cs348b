@@ -12,7 +12,7 @@
 #include <iostream>
 #include "sampler.h"
 
-#define VDB
+//#define VDB
 
 #ifndef M_PI
 #define M_PI           3.14159265358979323846

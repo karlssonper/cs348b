@@ -9,10 +9,10 @@
 #include "scene.h"
 #include "paramset.h"
 #include "cameras/perspective.h"
-#include <pngwriter.h>
+//#include <pngwriter.h>
 ///#include "/home/per/Downloads/pngwriter-0.5.4/src/pngwriter.h"
 
-#define VDB
+//#define VDB
 #ifdef VDB
 #include <vdb.h>
 #endif
@@ -409,17 +409,17 @@ void NaiadFoam::CreateFoamPlane(Scene * s) {
 
 
 
-        pngwriter png(w,h, 0, "foam.png");
+        //pngwriter png(w,h, 0, "foam.png");
 
         for (int y = 0; y < h; ++y) {
             for (int x = 0; x < w; ++x) {
                 if (FoamPlane()[x + y* w]) {
                     float d = FoamPlane()[x + y*w];
-                    png.plot(x,h-1-y, d, d, d);
+                    //png.plot(x,h-1-y, d, d, d);
                 }
             }
         }
-        png.close();
+        //png.close();
     } else {
         std::cerr << "No camera found, exiting" << std::endl;
         exit(1);

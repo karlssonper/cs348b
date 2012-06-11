@@ -8,7 +8,7 @@
 #include "naiadparticle.h"
 #include "paramset.h"
 
-#define VDB
+//#define VDB
 #ifdef VDB
 #include <vdb.h>
 #endif

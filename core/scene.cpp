@@ -37,7 +37,7 @@
 #include "shapes/naiadfoam.h"
 
 #include <iostream>
-#include <pngwriter.h>
+//#include <pngwriter.h>
 
 Scene * Scene::cur = NULL;
 
@@ -85,7 +85,7 @@ Scene::Scene(Primitive *accel, const vector<Light *> &lts,
             }
         }
 
-        pngwriter png(w,h, 0, "zBuffer.png");
+        //pngwriter png(w,h, 0, "zBuffer.png");
         float maxZ = 0.f, minZ = 1 << 20;
         for (int i = 0; i < w*h; ++i) {
             maxZ = max(maxZ,zBuffer[i]);
@@ -97,11 +97,11 @@ Scene::Scene(Primitive *accel, const vector<Light *> &lts,
                 if (zBuffer[x + y*w]) {
                     //std::cout << zBuffer[x + y*w] << std::endl;
                     const float d = (zBuffer[x + y*w] - minZ) / (maxZ - minZ);
-                    png.plot(x,h-1-y, d, d, d);
+                    //png.plot(x,h-1-y, d, d, d);
                 }
             }
         }
-        png.close();
+        //png.close();
     } else {
         std::cerr << "NaiadFoam: Camera not found!" << std::endl;
     }

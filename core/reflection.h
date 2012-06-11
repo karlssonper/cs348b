@@ -413,7 +413,7 @@ private:
 
 class Blinn : public MicrofacetDistribution {
 public:
-    Blinn(float e) { if (e > 10000.f || isnan(e)) e = 10000.f;
+    Blinn(float e) { if (e > 10000.f || e!=e) e = 10000.f;
                      exponent = e; }
     // Blinn Public Methods
     float D(const Vector &wh) const {
@@ -432,8 +432,8 @@ public:
     // Anisotropic Public Methods
     Anisotropic(float x, float y) {
         ex = x; ey = y;
-        if (ex > 10000.f || isnan(ex)) ex = 10000.f;
-        if (ey > 10000.f || isnan(ey)) ey = 10000.f;
+        if (ex > 10000.f || ex != ex) ex = 10000.f;
+        if (ey > 10000.f || ey != ey) ey = 10000.f;
     }
     float D(const Vector &wh) const {
         float costhetah = AbsCosTheta(wh);

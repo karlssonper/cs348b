@@ -35,7 +35,7 @@
 #include <NbField.h>
 #include <NbBody.h>
 
-#define VDB
+//#define VDB
 #ifdef VDB
 #include <vdb.h>
 #endif
