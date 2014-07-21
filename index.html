@@ -18,8 +18,8 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/karlssonper/cs348b">View on GitHub</a>
 
-          <h1 id="project_title">Cs348b</h1>
-          <h2 id="project_tagline"></h2>
+          <h1 id="project_title">cs348b Final Project</h1>
+          <h2 id="project_tagline">Rendering Foam and Splashes</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/karlssonper/cs348b/zipball/master">Download this project as a .zip file</a>
@@ -31,6 +31,7 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+		<p><img src="render.png"></p>
         <h2>
 <a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h2>
 
@@ -44,7 +45,8 @@
 <ol>
 <li>Create a water mesh</li>
 <li>Spawn foam and splash particles</li>
-</ol><p><img src="http://upload.wikimedia.org/wikipedia/commons/9/95/Erik_Karlsson_2013-05-19.JPG" alt="test"></p>
+</ol>
+<p><img src="naiad.png"></p>
 
 <h3>
 <a name="water-mesh" class="anchor" href="#water-mesh"><span class="octicon octicon-link"></span></a>Water Mesh</h3>
@@ -55,8 +57,9 @@
 <a name="storing-foam-particles" class="anchor" href="#storing-foam-particles"><span class="octicon octicon-link"></span></a>Storing Foam Particles</h2>
 
 <p>To store the foam particles, we need a nice data structure that helps us speed up rendering since we are going to have a large amount of particles. Naiad uses an adaptive grid approach to divide the data in the scene. I ended up storing the particles exactly the same way as Naiad by simply place each particle in different box shaped sub-grids. This can be seen in the picture below where particles with the same color belong to the same sub-grid.</p>
-
+<p><img src="foamboxes.png"></p>
 <p>The sub-grids don't necessarily have to be aligned in a nice way and create a uniform grid (and they are allowed to overlapped). The only important part is that they have to encapsulate their particles as tight as possible. Later on, in the global illumination section, we will see why this matters. Below is an example how the sub-grids can look like (only 10% of the total ones are shown to make it easier to see). Notice how they vary in size.</p>
+<p><img src="foamboxes2.png"></p>
 
 <h2>
 <a name="render-the-foam-plane" class="anchor" href="#render-the-foam-plane"><span class="octicon octicon-link"></span></a>Render the Foam Plane</h2>
@@ -78,6 +81,8 @@ for all particles do
 
 <p>One problem with the code given above is that it doesn't take account if an object is blocking the foam or not. For example, let's say the camera looks at one side of a big traveling ship that creates some nice foam. It is very likely that the other side also has foam, but to take this foam into the density approximation makes no sense. To solve this, we introduce the classic concept of a Z buffer. A Z buffer is a 2D image that tells us the closest distance from the camera to any object in the scene (The Z buffer will not store distances from the camera to the particles). Once we have the Z buffer, we can test if a foam particle is in front or behind an object in the scene:</p>
 
+<p><img src="zplane.png"></p>
+
 <p>This changes the previous code to:</p>
 
 <pre><code>//Init foam plane
@@ -96,6 +101,8 @@ for all particles do
 </code></pre>
 
 <p>Here is an example of a rendered image with and without the use of a z buffer:</p>
+
+<p><img src="comp.png"></p>
 
 <h3>
 <a name="linear-density-scale" class="anchor" href="#linear-density-scale"><span class="octicon octicon-link"></span></a>Linear Density Scale</h3>
@@ -120,6 +127,8 @@ for all pixels in foam plane do
 
 <p>Here is an overview of the foam pipeline that was used in the project. Everything was done directly in PBRT. Instead of passing bezier points to the Curves transformation, I exported a text file from gimp with the actual curve. Once in PBRT, the curves operation is similar to a texture lookup.</p>
 
+<p><img src="foampipeline.png"></p>
+
 <h3>
 <a name="compositing-render-and-foam-plane" class="anchor" href="#compositing-render-and-foam-plane"><span class="octicon octicon-link"></span></a>Compositing Render and Foam plane</h3>
 
@@ -133,6 +142,8 @@ for all pixels in foam plane do
 <h2>
 <a name="global-illumination" class="anchor" href="#global-illumination"><span class="octicon octicon-link"></span></a>Global Illumination</h2>
 
+<p><img src="reflection.png"></p>
+
 <p>If you compare the picture above with the final render, you can see that there are no reflections of the foam in the one above. This is something we want in our renders to make it look real. While watching reference pictures of, I realized that in most cases, there's not a lot of detail in the reflections. This is something we could take advantage of. What approximations can we make to still have good results and fast render times?</p>
 
 <h3>
@@ -144,6 +155,8 @@ for all pixels in foam plane do
 <a name="foam-plane-lookup" class="anchor" href="#foam-plane-lookup"><span class="octicon octicon-link"></span></a>Foam Plane Lookup</h3>
 
 <p>Similar to what we did when we created the foam plane, we are now once again going to convert our points into camera, screen and eventually raster space. If a ray hits a foam box, we transform this point to raster space. If inside the foam plane, we use the transformed coordinates to do a lookup in the foam plane and store this value in the ray object (in PBRT a member variable had to be added to the class Ray).</p>
+
+<p><img src="inv.png"></p>
 
 <h3>
 <a name="modifying-the-integrator-class" class="anchor" href="#modifying-the-integrator-class"><span class="octicon octicon-link"></span></a>Modifying the Integrator class</h3>
@@ -169,6 +182,7 @@ return rd.foam_alpha ? Spectrum(1.0, 1.0 , 1.0) - (1-L)(1-rd.foam_alpha) : L;
 
 <h3>
 <a name="wet-layer" class="anchor" href="#wet-layer"><span class="octicon octicon-link"></span></a>Wet Layer</h3>
+<p><img src="wet.png"></p>
 
 <p>To make the shark look wet, a bump map together with a specular map was used.</p>
 
